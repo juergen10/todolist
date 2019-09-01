@@ -22,11 +22,10 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="card-group">
+                      <div class="card-deck">
                         <div class="card">
                           <h5 class="card-header">Card title</h5>
                           <div class="card-body">
-                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
                           </div>
                         </div>
                         <div class="card">
