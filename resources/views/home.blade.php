@@ -6,7 +6,6 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">Task Card</div>
-
                 <div class="card-body">
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
@@ -23,18 +22,15 @@
                     </div>
                     <div class="row">
                       <div class="card-deck">
-
-                        <div class="card">
-                          <h5 class="card-header">Card title</h5>
-                          <div class="card-body">
+                        @foreach($data as $cardTask)
+                        <div class="col-md-6 my-2">
+                          <div class="card">
+                            <h5 class="card-header">{{$cardTask->title}}</h5>
+                            <div class="card-body">
+                            </div>
                           </div>
                         </div>
-                        <div class="card">
-                          <h5 class="card-header">Card title</h5>
-                          <div class="card-body">
-                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                          </div>
-                        </div>
+                        @endforeach
                       </div>
                     </div>
                 </div>
