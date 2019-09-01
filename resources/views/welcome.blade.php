@@ -4,12 +4,13 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>TodoList</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 
         <!-- Styles -->
+        <link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}">
         <style>
             html, body {
                 background-color: #fff;
@@ -48,52 +49,53 @@
                 font-size: 84px;
             }
 
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
             .m-b-md {
                 margin-bottom: 30px;
             }
         </style>
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
-                    @endauth
-                </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
-            </div>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">TodoList</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+          </ul>
         </div>
+      </nav>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <div class="title">
+              Todo List App
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="row">
+              @if (Route::has('login'))
+              @auth
+              <div class="col-md-6 text-right">
+                <a href="{{ route('home') }}" class="btn btn-success btn-lg">Home</a>
+              </div>
+              @else
+              <div class="col-md-6 text-right">
+                <a href="{{ route('login') }}" class="btn btn-primary btn-lg" role="button">Login</a>
+              </div>
+              @if (Route::has('register'))
+              <div class="col-md-6">
+                <a href="{{ route('register') }}" class="btn btn-secondary btn-lg" role="button">Register</a>
+              </div>
+              @endif
+              @endauth
+              @endif
+            </div>
+          </div>
+        </div>
+      </div>
     </body>
 </html>
