@@ -77,5 +77,6 @@
     </div>
     <script src="{{asset('assets/js/jquery.min.js')}}" charset="utf-8"></script>
     <script src="{{asset('assets/js/bootstrap.bundle.min.js')}}" charset="utf-8"></script>
+    @yield('jquery')
 </body>
 </html>

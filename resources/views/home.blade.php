@@ -15,14 +15,15 @@
                     @endif
                     <div class="row">
                       <div class="input-group mb-3 col-md-5">
-                        <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
+                        <input type="text" class="form-control" id="card-name" placeholder="Card Name">
                         <div class="input-group-append">
-                          <button class="btn btn-primary" type="button" id="button-addon2">Add</button>
+                          <button class="btn btn-primary" id="add" type="button">Add</button>
                         </div>
                       </div>
                     </div>
                     <div class="row">
                       <div class="card-deck">
+
                         <div class="card">
                           <h5 class="card-header">Card title</h5>
                           <div class="card-body">
@@ -41,4 +42,23 @@
         </div>
     </div>
 </div>
+@endsection
+@section('jquery')
+  <script type="text/javascript">
+  $( document ).ready(function() {
+    $("#add").click(function(){
+      $.ajax({
+        type: "POST",
+        url: "{{ route("add") }}",
+        data: {
+          _token: "{{ csrf_token() }}",
+          name : $("#card-name").val()
+        },
+        success: function(data) {
+          alert("it works");
+        }
+      });
+    })
+  });
+  </script>
 @endsection
