@@ -19,7 +19,7 @@
         @endif
         <div class="row">
           <div class="input-group mb-3 col-md-5">
-            <input type="text" class="form-control" id="card-name" placeholder="Card Name">
+            <input type="text" class="form-control" required id="card-name" placeholder="Card Name">
             <div class="input-group-append">
               <button class="btn btn-primary" id="add" type="button">Add</button>
             </div>
@@ -53,9 +53,9 @@
                 <div class="card-body">
                   <div class="row">
                     <div class="input-group">
-                      <input type="text" class="form-control" id="task-name" placeholder="Task Name">
+                      <input type="text" class="form-control" id="task-name-{{$cardTask->id}}" placeholder="Task Name">
                       <div class="input-group-append">
-                        <button class="btn btn-primary" id="add-task" data-id="{{$cardTask->id}}" type="button" title="Add Task"><i class="material-icons">add</i></button>
+                        <button class="btn btn-primary btn-sm add-task" id="add-task" data-id="{{$cardTask->id}}" type="button" title="Add Task"><i class="material-icons">add</i></button>
                       </div>
                     </div>
                   </div>
@@ -89,7 +89,7 @@
           </div>
           <div class="form-group">
             <label for="message-text" class="col-form-label">Card Name:</label>
-            <input type="text" class="form-control" id="namecard">
+            <input type="text" required class="form-control" id="namecard">
           </div>
         </div>
         <div class="modal-footer">
@@ -121,14 +121,15 @@
       });
     });
 
-    $("#add-task").click(function(){
+    $(".add-task").click(function(){
+      var id = $(this).data('id');
       $.ajax({
         type: "POST",
         url: "{{ route("addtask") }}",
         data: {
           _token: "{{ csrf_token() }}",
-          name : $("#task-name").val(),
-          id_card : $(this).data('id')
+          name : $('#task-name-'+ id +'').val(),
+          id_card : id
         },
         success: function(data) {
           alert(data);
