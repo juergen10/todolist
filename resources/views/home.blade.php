@@ -1,68 +1,75 @@
 @extends('layouts.app')
 @section('title', 'Home')
 @section('content')
+<style media="screen">
+.material-icons.md-12 {
+  font-size: 12px;
+}
+</style>
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Task Card</div>
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-                    <div class="row">
-                      <div class="input-group mb-3 col-md-5">
-                        <input type="text" class="form-control" id="card-name" placeholder="Card Name">
-                        <div class="input-group-append">
-                          <button class="btn btn-primary" id="add" type="button">Add</button>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="card-reload" id="card-reload">
-                        <div class="card-deck" id="card-deck">
-                          <style media="screen">
-                          .material-icons.md-12 {
-                            font-size: 12px;
-                          }
-                          </style>
-                          @foreach($data as $cardTask)
-                          <div class="col-md-6 my-2">
-                            <div class="card">
-                              <div class="card-header">
-                                <div class="row">
-                                  <div class="col-md-9 item{{$cardTask->id}}">
-                                    <p class="h5">{{$cardTask->title}}</p>
-                                  </div>
-                                  <div class="col-md-3">
-                                    <div class="row">
-                                      <button title="edit" type="button" id="edit-card" class="edit-card btn btn-outline-dark btn-sm"
-                                      data-id="{{$cardTask->id}}" data-name="{{$cardTask->title}}">
-                                      <i class="material-icons md-12">edit</i>
-                                    </button>
-                                    <button title="delete" type="button" id="delete-card" class="delete-card btn btn-outline-danger btn-sm"
-                                    data-id="{{$cardTask->id}}" data-name="{{$cardTask->title}}">
-                                    <i class="material-icons md-12">delete_sweep</i>
-                                    </button>
-                                    </div>
-                                  </div>
-                              </div>
-                            </div>
-                            <div class="card-body">
-                            </div>
-                          </div>
-                        </div>
-                        @endforeach
-                      </div>
-
-                      </div>
-                    </div>
-                </div>
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">Task Card</div>
+        <div class="card-body">
+        @if (session('status'))
+          <div class="alert alert-success" role="alert">
+            {{ session('status') }}
+          </div>
+        @endif
+        <div class="row">
+          <div class="input-group mb-3 col-md-5">
+            <input type="text" class="form-control" id="card-name" placeholder="Card Name">
+            <div class="input-group-append">
+              <button class="btn btn-primary" id="add" type="button">Add</button>
             </div>
+          </div>
         </div>
+        <div class="row">
+          <div class="card-reload" id="card-reload">
+            <div class="card-deck" id="card-deck">
+              @foreach($data as $cardTask)
+              <div class="col-md-6 my-2">
+                <div class="card">
+                  <div class="card-header">
+                    <div class="row">
+                      <div class="col-md-9 item{{$cardTask->id}}">
+                        <p class="h5">{{$cardTask->title}}</p>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="row">
+                          <button title="edit" type="button" id="edit-card" class="edit-card btn btn-outline-dark btn-sm"
+                          data-id="{{$cardTask->id}}" data-name="{{$cardTask->title}}">
+                          <i class="material-icons md-12">edit</i>
+                        </button>
+                        <button title="delete" type="button" id="delete-card" class="delete-card btn btn-outline-danger btn-sm"
+                        data-id="{{$cardTask->id}}" data-name="{{$cardTask->title}}">
+                        <i class="material-icons md-12">delete_sweep</i>
+                        </button>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="input-group">
+                      <input type="text" class="form-control" id="task-name" placeholder="Task Name">
+                      <div class="input-group-append">
+                        <button class="btn btn-primary" id="add-task" type="button" title="Add Task"><i class="material-icons">add</i></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+              @endforeach
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
