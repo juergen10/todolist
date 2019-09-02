@@ -11,4 +11,9 @@ class CardTask extends Model
     {
       return $this->belongsTo(User::class);
     }
+
+    public function carTask()
+    {
+      return $this->hasMany(Task::class);
+    }
 }

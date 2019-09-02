@@ -24,3 +24,4 @@ Route::get('/home', 'CardTaskController@index')->name('home');
 Route::post('/add', 'CardTaskController@create')->name('add');
 Route::post('/edit', 'CardTaskController@edit')->name('editcard');
 Route::post('/delete', 'CardTaskController@delete')->name('deletecard');
+Route::post('/addtask', 'TaskController@create')->name('addtask');

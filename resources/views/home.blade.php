@@ -55,10 +55,11 @@
                     <div class="input-group">
                       <input type="text" class="form-control" id="task-name" placeholder="Task Name">
                       <div class="input-group-append">
-                        <button class="btn btn-primary" id="add-task" type="button" title="Add Task"><i class="material-icons">add</i></button>
+                        <button class="btn btn-primary" id="add-task" data-id="{{$cardTask->id}}" type="button" title="Add Task"><i class="material-icons">add</i></button>
                       </div>
                     </div>
                   </div>
+
                 </div>
               </div>
             </div>
@@ -120,6 +121,23 @@
       });
     });
 
+    $("#add-task").click(function(){
+      $.ajax({
+        type: "POST",
+        url: "{{ route("addtask") }}",
+        data: {
+          _token: "{{ csrf_token() }}",
+          name : $("#task-name").val(),
+          id_card : $(this).data('id')
+        },
+        success: function(data) {
+          alert(data);
+          $("#task-name").val('');
+          // location.reload();
+        }
+      });
+    });
+
     $(".edit-card").click(function(){
       $("#id-card").val($(this).data("id"));
       $("#namecard").val($(this).data("name"));
@@ -148,6 +166,7 @@
         });
       });
     })
+
     $("#save-card").click(function(){
       $.ajax({
         type: "POST",
