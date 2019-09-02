@@ -35,4 +35,10 @@ class CardTaskController extends Controller
     $data->save();
     return response ()->json ( $data );
   }
+  public function delete(Request $request)
+  {
+    $data = CardTask::find($request->id);
+    $data->delete();
+    return response ()->json ();
+  }
 }

@@ -45,8 +45,7 @@
                                     <button title="delete" type="button" id="delete-card" class="delete-card btn btn-outline-danger btn-sm"
                                     data-id="{{$cardTask->id}}" data-name="{{$cardTask->title}}">
                                     <i class="material-icons md-12">delete_sweep</i>
-                                  </button>
-
+                                    </button>
                                     </div>
                                   </div>
                               </div>
@@ -93,6 +92,7 @@
     </div>
   </div>
 </div>
+
 @endsection
 @section('jquery')
   <script type="text/javascript">
@@ -119,6 +119,28 @@
       $('#exampleModal').modal('show');
     });
 
+    $(".delete-card").click(function(e) {
+      var text = $(this).data("name");
+      var id = $(this).data("id");
+      e.preventDefault();
+      $.confirmModal('Are you sure to delete <b>'+ text +'</b> card?',{
+        messageHeader: "Confirmation Card Delete"
+      }, function(el) {
+        console.log("Ok was clicked!")
+        $.ajax({
+          type: "POST",
+          url: "{{route("deletecard")}}",
+          data:{
+            _token : "{{ csrf_token()}}",
+            id : id,
+          },
+          success: function(data) {
+            $("#namecard").val('');
+              location.reload();
+          }
+        });
+      });
+    })
     $("#save-card").click(function(){
       $.ajax({
         type: "POST",
@@ -128,7 +150,6 @@
           id : $("#id-card").val(),
           name : $("#namecard").val()
         },
-        // cache: false,
         success: function(data) {
           $('#exampleModal').modal('hide');
           $("#namecard").val('');
@@ -138,4 +159,5 @@
     });
   });
   </script>
+  <script src="{{asset('assets/js/jquery.confirmModal.min.js')}}" charset="utf-8"></script>
 @endsection
