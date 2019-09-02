@@ -28,4 +28,11 @@ class CardTaskController extends Controller
     $cardTask->save();
     return "berhasil";
   }
+  public function edit(Request $request)
+  {
+    $data = CardTask::find($request->id);
+    $data->title = $request->name;
+    $data->save();
+    return response ()->json ( $data );
+  }
 }

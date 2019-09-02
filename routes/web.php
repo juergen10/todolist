@@ -22,3 +22,4 @@ Route::get('/', function () {
 Auth::routes();
 Route::get('/home', 'CardTaskController@index')->name('home');
 Route::post('/add', 'CardTaskController@create')->name('add');
+Route::post('/edit', 'CardTaskController@edit')->name('editcard');

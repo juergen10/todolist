@@ -21,22 +21,77 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="card-deck">
-                        @foreach($data as $cardTask)
-                        <div class="col-md-6 my-2">
-                          <div class="card">
-                            <h5 class="card-header">{{$cardTask->title}}</h5>
+                      <div class="card-reload" id="card-reload">
+                        <div class="card-deck" id="card-deck">
+                          <style media="screen">
+                          .material-icons.md-12 {
+                            font-size: 12px;
+                          }
+                          </style>
+                          @foreach($data as $cardTask)
+                          <div class="col-md-6 my-2">
+                            <div class="card">
+                              <div class="card-header">
+                                <div class="row">
+                                  <div class="col-md-9 item{{$cardTask->id}}">
+                                    <p class="h5">{{$cardTask->title}}</p>
+                                  </div>
+                                  <div class="col-md-3">
+                                    <div class="row">
+                                      <button title="edit" type="button" id="edit-card" class="edit-card btn btn-outline-dark btn-sm"
+                                      data-id="{{$cardTask->id}}" data-name="{{$cardTask->title}}">
+                                      <i class="material-icons md-12">edit</i>
+                                    </button>
+                                    <button title="delete" type="button" id="delete-card" class="delete-card btn btn-outline-danger btn-sm"
+                                    data-id="{{$cardTask->id}}" data-name="{{$cardTask->title}}">
+                                    <i class="material-icons md-12">delete_sweep</i>
+                                  </button>
+
+                                    </div>
+                                  </div>
+                              </div>
+                            </div>
                             <div class="card-body">
                             </div>
                           </div>
                         </div>
                         @endforeach
                       </div>
+
+                      </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Card</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Id Card:</label>
+            <input type="text" readonly class="form-control" id="id-card">
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Card Name:</label>
+            <input type="text" class="form-control" id="namecard">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" id="save-card">Save</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 @endsection
 @section('jquery')
@@ -51,10 +106,36 @@
           name : $("#card-name").val()
         },
         success: function(data) {
-          alert("it works");
+          alert(data);
+          $("#card-name").val('');
+          location.reload();
         }
       });
-    })
+    });
+
+    $(".edit-card").click(function(){
+      $("#id-card").val($(this).data("id"));
+      $("#namecard").val($(this).data("name"));
+      $('#exampleModal').modal('show');
+    });
+
+    $("#save-card").click(function(){
+      $.ajax({
+        type: "POST",
+        url: "{{route("editcard")}}",
+        data:{
+          _token : "{{ csrf_token()}}",
+          id : $("#id-card").val(),
+          name : $("#namecard").val()
+        },
+        // cache: false,
+        success: function(data) {
+          $('#exampleModal').modal('hide');
+          $("#namecard").val('');
+            location.reload();
+        }
+      });
+    });
   });
   </script>
 @endsection
