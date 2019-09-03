@@ -62,34 +62,27 @@
                   @if(isset($task[$cardTask->id]))
                   @foreach($task[$cardTask->id] as $valueTask)
                   <div class="form-check my-2">
-                    @if(!$valueTask['iscompleted'])
                     <div class="row">
+                    @if(!$valueTask['iscompleted'])
                       <div class="col-md-6">
                         <input class="form-check-input blankCheckbox position-static" type="checkbox" name="task[]" id="blankCheckbox" value="{{$valueTask['id']}}">
                         <label class="form-check-label" for="defaultCheck1">
                           {{$valueTask['task_name']}}
                         </label>
                       </div>
-                      <div class="col-md-4">
-                        <button class="btn btn-sm btn-outline-dark"><i class="material-icons md-12">edit</i></button>
-                        <button id="del-task" data-id="{{$valueTask['id']}}" class="del-task btn btn-sm btn-outline-danger"><i class="material-icons md-12">delete_sweep</i></button>
-                      </div>
-                    </div>
                     @else
-                    <div class="row">
-                      <div class="col-md-6">
-                        <input class="form-check-input blankCheckbox position-static" type="checkbox" name="task[]" checked id="blankCheckbox" value="{{$valueTask['id']}}">
-                        <label class="form-check-label" for="defaultCheck1">
-                          <del>{{$valueTask['task_name']}}</del>
-                        </label>
-                      </div>
-                      <div class="col-md-4">
-                        <button class="btn btn-sm btn-outline-dark"><i class="material-icons md-12">edit</i></button>
-                        <button id="del-task" data-id="{{$valueTask['id']}}" class="del-task btn btn-sm btn-outline-danger"><i class="material-icons md-12">delete_sweep</i></button>
-                      </div>
+                    <div class="col-md-6">
+                      <input class="form-check-input blankCheckbox position-static" type="checkbox" name="task[]" checked id="blankCheckbox" value="{{$valueTask['id']}}">
+                      <label class="form-check-label" for="defaultCheck1">
+                        <del>{{$valueTask['task_name']}}</del>
+                      </label>
                     </div>
                     @endif
-
+                    <div class="col-md-4">
+                      <button id="edit-task" data-id="{{$valueTask['id']}}" data-name="{{$valueTask['task_name']}}"class="edit-task btn btn-sm btn-outline-dark"><i class="material-icons md-12">edit</i></button>
+                      <button id="del-task" data-id="{{$valueTask['id']}}" class="del-task btn btn-sm btn-outline-danger"><i class="material-icons md-12">delete_sweep</i></button>
+                    </div>
+                  </div>
                   </div>
                   @endforeach
                   @endif
@@ -110,23 +103,24 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Edit Card</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Edit Window</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Id Card:</label>
+            <label for="recipient-name" class="col-form-label">Id:</label>
             <input type="text" readonly class="form-control" id="id-card">
           </div>
           <div class="form-group">
-            <label for="message-text" class="col-form-label">Card Name:</label>
+            <label for="message-text" class="col-form-label">Name:</label>
             <input type="text" required class="form-control" id="namecard">
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" id="save-card">Save</button>
+          <button type="button" class="btn btn-primary" id="save-task">Save</button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
       </div>
@@ -168,9 +162,16 @@
       }
     });
 
+    $(".edit-task").click(function() {
+      $("#id-card").val($(this).data("id"));
+      $("#namecard").val($(this).data("name"));
+      $('#exampleModal').modal('show');
+      $('#save-task').show();
+      $("#save-card").hide();
+    })
+
     $(".del-task").click(function(e) {
       var id = $(this).data('id');
-      alert(id);
       e.preventDefault();
       $.confirmModal('Are you sure to delete this task?',{
         messageHeader: "Confirmation Task Delete"
@@ -227,6 +228,8 @@
       $("#id-card").val($(this).data("id"));
       $("#namecard").val($(this).data("name"));
       $('#exampleModal').modal('show');
+      $("#save-card").show();
+      $("#save-task").hide();
     });
 
     $(".delete-card").click(function(e) {
@@ -265,6 +268,23 @@
           $('#exampleModal').modal('hide');
           $("#namecard").val('');
             location.reload();
+        }
+      });
+    });
+
+    $("#save-task").click(function(){
+      $.ajax({
+        type: "POST",
+        url: "{{route("taskedit")}}",
+        data:{
+          _token : "{{ csrf_token()}}",
+          id : $("#id-card").val(),
+          name : $("#namecard").val()
+        },
+        success: function(data) {
+          $('#exampleModal').modal('hide');
+          $("#namecard").val('');
+          location.reload();
         }
       });
     });
