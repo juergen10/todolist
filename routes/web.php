@@ -25,3 +25,6 @@ Route::post('/add', 'CardTaskController@create')->name('add');
 Route::post('/edit', 'CardTaskController@edit')->name('editcard');
 Route::post('/delete', 'CardTaskController@delete')->name('deletecard');
 Route::post('/addtask', 'TaskController@create')->name('addtask');
+// Route::get('/test', 'CardTaskController@task')->name('showtask');
+Route::post('/update-status', 'TaskController@updateCompleted')->name('taskupdate');
+Route::post('/delete-task', 'TaskController@delete')->name('taskdelete');

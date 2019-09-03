@@ -59,7 +59,40 @@
                       </div>
                     </div>
                   </div>
+                  @if(isset($task[$cardTask->id]))
+                  @foreach($task[$cardTask->id] as $valueTask)
+                  <div class="form-check my-2">
+                    @if(!$valueTask['iscompleted'])
+                    <div class="row">
+                      <div class="col-md-6">
+                        <input class="form-check-input blankCheckbox position-static" type="checkbox" name="task[]" id="blankCheckbox" value="{{$valueTask['id']}}">
+                        <label class="form-check-label" for="defaultCheck1">
+                          {{$valueTask['task_name']}}
+                        </label>
+                      </div>
+                      <div class="col-md-4">
+                        <button class="btn btn-sm btn-outline-dark"><i class="material-icons md-12">edit</i></button>
+                        <button id="del-task" data-id="{{$valueTask['id']}}" class="del-task btn btn-sm btn-outline-danger"><i class="material-icons md-12">delete_sweep</i></button>
+                      </div>
+                    </div>
+                    @else
+                    <div class="row">
+                      <div class="col-md-6">
+                        <input class="form-check-input blankCheckbox position-static" type="checkbox" name="task[]" checked id="blankCheckbox" value="{{$valueTask['id']}}">
+                        <label class="form-check-label" for="defaultCheck1">
+                          <del>{{$valueTask['task_name']}}</del>
+                        </label>
+                      </div>
+                      <div class="col-md-4">
+                        <button class="btn btn-sm btn-outline-dark"><i class="material-icons md-12">edit</i></button>
+                        <button id="del-task" data-id="{{$valueTask['id']}}" class="del-task btn btn-sm btn-outline-danger"><i class="material-icons md-12">delete_sweep</i></button>
+                      </div>
+                    </div>
+                    @endif
 
+                  </div>
+                  @endforeach
+                  @endif
                 </div>
               </div>
             </div>
@@ -105,6 +138,58 @@
 @section('jquery')
   <script type="text/javascript">
   $( document ).ready(function() {
+    $(".blankCheckbox").change(function() {
+      if (this.checked) {
+        $.ajax({
+          type: "POST",
+          url: "{{ route("taskupdate") }}",
+          data: {
+            _token: "{{ csrf_token() }}",
+            id : $(this).val(),
+            status : '1'
+          },
+          success: function(data) {
+            location.reload();
+          }
+        });
+      }else {
+        $.ajax({
+          type: "POST",
+          url: "{{ route("taskupdate") }}",
+          data: {
+            _token: "{{ csrf_token() }}",
+            id : $(this).val(),
+            status : '0'
+          },
+          success: function(data) {
+            location.reload();
+          }
+        });
+      }
+    });
+
+    $(".del-task").click(function(e) {
+      var id = $(this).data('id');
+      alert(id);
+      e.preventDefault();
+      $.confirmModal('Are you sure to delete this task?',{
+        messageHeader: "Confirmation Task Delete"
+      }, function(el) {
+        console.log("Ok was clicked!")
+        $.ajax({
+          type: "POST",
+          url: "{{route("taskdelete")}}",
+          data:{
+            id : id,
+            _token : "{{ csrf_token()}}",
+          },
+          success: function(data) {
+              location.reload();
+          }
+        });
+      });
+    });
+
     $("#add").click(function(){
       $.ajax({
         type: "POST",
@@ -132,9 +217,8 @@
           id_card : id
         },
         success: function(data) {
-          alert(data);
-          $("#task-name").val('');
-          // location.reload();
+          $('#task-name-'+ id +'').val('');
+          location.reload();
         }
       });
     });

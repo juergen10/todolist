@@ -16,4 +16,18 @@ class TaskController extends Controller
     $task->save();
     return "berhasil";
   }
+  public function updateCompleted(Request $request)
+  {
+    $data = Task::find($request->id);
+    $data->iscompleted = $request->status;
+    $data->save();
+    return response ()->json ( $data );
+    return "berhasil";
+  }
+  public function delete(Request $request)
+  {
+    $data = Task::find($request->id);
+    $data->delete();
+    return response ()->json ();
+  }
 }
